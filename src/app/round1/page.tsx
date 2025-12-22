@@ -17,29 +17,6 @@ interface Progress {
   bingoLines: number[][];
 }
 
-// dummy data for now - swap with API later
-const MOCK_GAME_DATA: GameData = {
-  id: 'round1',
-  name: 'Round 1',
-  problems: [
-    { gridIndex: 0, contestId: '1926', problemIndex: 'A', name: 'Vlad and the Best of Five', points: 10 },
-    { gridIndex: 1, contestId: '1926', problemIndex: 'B', name: 'Vlad and Shapes', points: 10 },
-    { gridIndex: 2, contestId: '1926', problemIndex: 'C', name: 'Vlad and a Sum of Sum of Digits', points: 10 },
-    { gridIndex: 3, contestId: '1927', problemIndex: 'A', name: 'Make it White', points: 10 },
-    { gridIndex: 4, contestId: '1927', problemIndex: 'B', name: 'Following the String', points: 10 },
-    { gridIndex: 5, contestId: '1927', problemIndex: 'C', name: 'Choose the Different Ones', points: 10 },
-    { gridIndex: 6, contestId: '1928', problemIndex: 'A', name: 'Rectangle Cutting', points: 10 },
-    { gridIndex: 7, contestId: '1928', problemIndex: 'B', name: 'Equalize', points: 10 },
-    { gridIndex: 8, contestId: '1928', problemIndex: 'C', name: 'Physical Education Lesson', points: 10 },
-  ],
-};
-
-const MOCK_PROGRESS: Progress = {
-  solvedIndices: [0, 1, 4], // testing with 3 solved
-  currentScore: 30,
-  bingoLines: [],
-};
-
 export default function Round1Page() {
   const [game, setGame] = useState<GameData | null>(null);
   const [progress, setProgress] = useState<Progress | null>(null);
@@ -50,14 +27,15 @@ export default function Round1Page() {
   useEffect(() => {
     const loadGameData = async () => {
       try {
-        // fetch from /api/game?round=1 here
-        // const res = await fetch('/api/game?round=1');
-        // const data = await res.json();
+        const res = await fetch('/api/question');
+        const data = await res.json();
 
-        // fake delay for testing
-        await new Promise(resolve => setTimeout(resolve, 800));
-        setGame(MOCK_GAME_DATA);
-        setProgress(MOCK_PROGRESS);
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to load questions');
+        }
+
+        setGame(data.game);
+        setProgress(data.progress);
       } catch (err) {
         setError('Failed to load game data');
       } finally {
@@ -69,31 +47,20 @@ export default function Round1Page() {
   }, []);
 
   const handleSync = useCallback(async (): Promise<void> => {
-    // hook up to /api/sync-score POST
-    // const res = await fetch('/api/sync-score', { method: 'POST' });
-    // const data = await res.json();
+    try {
+      const res = await fetch('/api/sync-score', { method: 'POST' });
+      const data = await res.json();
 
-    // fake sync for demo
-    await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
-
-    // randomly mark a problem as solved for testing
-    if (progress) {
-      const newSolvedIndices = [...progress.solvedIndices];
-      const unsolvedIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8].filter(i => !newSolvedIndices.includes(i));
-      if (unsolvedIndices.length > 0) {
-        const randomIndex = unsolvedIndices[Math.floor(Math.random() * unsolvedIndices.length)];
-        newSolvedIndices.push(randomIndex);
+      if (data.success) {
+        setProgress(data.progress);
+        setLastSyncTime(new Date());
+      } else {
+        setError(data.error || 'Sync failed');
       }
-
-      setProgress({
-        ...progress,
-        solvedIndices: newSolvedIndices,
-        currentScore: newSolvedIndices.length * 10,
-      });
+    } catch (err) {
+      setError('Failed to sync with Codeforces');
     }
-
-    setLastSyncTime(new Date());
-  }, [progress]);
+  }, []);
 
   const getBingoIndices = useCallback((): Set<number> => {
     if (!progress?.bingoLines) return new Set();
