@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "tsx scripts/seed.ts",
+    "seed-r2": "tsx scripts/seed-r2.ts",
     "setup": "tsx scripts/setupDatabase.ts"
   },
   "dependencies": {
@@ -16,8 +17,10 @@
     "mongodb": "^7.0.0",
     "mongoose": "^9.0.2",
     "next": "16.1.0",
+    "next-auth": "^4.24.13",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

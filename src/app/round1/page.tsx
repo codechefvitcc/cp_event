@@ -103,7 +103,6 @@ export default function Round1Page() {
         {/* Header Section */}
         <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-6 sm:mb-8 border-b border-white/10 pb-4 sm:pb-6">
           <div className="flex flex-col gap-2">
-            {/* Team Identity Tag */}
             <div className="flex items-center gap-2 mb-2">
               <div className="w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.6)]" />
               <span className="font-ui text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/60 whitespace-nowrap">
@@ -111,7 +110,7 @@ export default function Round1Page() {
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-sans font-black tracking-tighter uppercase mb-2 chrome-text">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-sans font-black tracking-tighter uppercase mb-2 chrome-text">
               {game?.name || 'Round 1'}
             </h1>
 
@@ -127,9 +126,7 @@ export default function Round1Page() {
             </div>
           </div>
 
-          {/* Right Side: Buttons + Para */}
           <div className="flex flex-col items-start lg:items-end gap-4">
-            {/* Dashboard & Logout Buttons */}
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => window.location.href = '/'}
@@ -145,18 +142,15 @@ export default function Round1Page() {
               </button>
             </div>
             
-            {/* Rules Paragraph */}
             <p className="font-ui text-[10px] sm:text-xs text-white/30 max-w-[280px] leading-relaxed uppercase tracking-wider text-left lg:text-right">
               Solve problems to mark cells. Complete rows, columns, or diagonals for bingo bonus points.
             </p>
           </div>
         </header>
 
-        {/* Stats Dashboard - Condensed Symmetrical Pill */}
+        {/* Stats Dashboard */}
         <section className="flex justify-center mb-12 sm:mb-16">
           <div className="flex w-full max-w-md sm:max-w-3xl bg-[#0b0b0b] rounded-3xl border border-white/10 overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.6)]">
-            
-            {/* TOTAL SCORE */}
             <div className="flex-1 min-w-0 py-4 sm:py-6 flex flex-col group hover:bg-white/5 transition-all pl-6 sm:pl-10">
               <p className="font-ui text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-white/40 mb-1 text-left group-hover:text-white/60 transition-colors truncate">
                 Total Score
@@ -171,7 +165,6 @@ export default function Round1Page() {
 
             <div className="w-px bg-white/10 my-4 sm:my-6" />
 
-            {/* PROBLEMS SOLVED */}
             <div className="flex-1 min-w-0 py-4 sm:py-6 flex flex-col group hover:bg-white/5 transition-all pl-6 sm:pl-10">
               <p className="font-ui text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-white/40 mb-1 text-left group-hover:text-white/60 transition-colors truncate">
                 Solved
@@ -186,7 +179,6 @@ export default function Round1Page() {
 
             <div className="w-px bg-white/10 my-4 sm:my-6" />
 
-            {/* BINGO LINES */}
             <div className="flex-1 min-w-0 py-4 sm:py-6 flex flex-col group hover:bg-white/5 transition-all pl-6 sm:pl-10">
               <p className="font-ui text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-white/40 mb-1 text-left group-hover:text-white/60 transition-colors truncate">
                 Bingo Lines
@@ -253,9 +245,28 @@ export default function Round1Page() {
             </div>
           </div>
         </div>
+
+        {/* Legend - Tightened Spacing */}
+        <div className="mt-8 sm:mt-10 pt-8 border-t border-white/5">
+          <div className="flex flex-wrap justify-center gap-6 sm:gap-10">
+            <div className="flex items-center gap-3">
+              <div className="w-4 h-4 bg-black/40 border border-white/10" />
+              <span className="font-ui text-[10px] uppercase tracking-wider text-white/40">Unsolved</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-4 h-4 bg-white border border-white" />
+              <span className="font-ui text-[10px] uppercase tracking-wider text-white/40">Solved</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-4 h-4 bg-white border border-white ring-2 ring-white ring-offset-2 ring-offset-black" />
+              <span className="font-ui text-[10px] uppercase tracking-wider text-white/40">Bingo Cell</span>
+            </div>
+          </div>
+        </div>
       </main>
 
-      <footer className="border-t border-white/5 mt-16 sm:mt-24 py-8">
+      {/* Footer - Tightened Spacing */}
+      <footer className="border-t border-white/5 mt-8 sm:mt-6 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
           <p className="font-ui text-[10px] uppercase tracking-[0.2em] text-white/20">Codeforces Bingo Contest</p>
           <p className="font-ui text-[10px] uppercase tracking-[0.2em] text-white/20">Round 1 — Active</p>

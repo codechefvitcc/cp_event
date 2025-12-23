@@ -6,8 +6,8 @@ export interface ITeamScore extends Document {
   solvedIndices: number[];
   currentScore: number;
   bingoLines: number[][];
-  lastSubmissionTime: Date | null;
   syncCount: number;
+  lastSubmissionTime?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,16 +15,24 @@ export interface ITeamScore extends Document {
 const TeamScoreSchema = new Schema<ITeamScore>(
   {
     teamId: { type: String, required: true, unique: true },
-    questionOrder: [{ type: Number }],
-    solvedIndices: [{ type: Number }],
+    questionOrder: { type: [Number], required: true },
+    solvedIndices: { type: [Number], default: [] },
     currentScore: { type: Number, default: 0 },
-    bingoLines: [[{ type: Number }]],
-    lastSubmissionTime: { type: Date, default: null },
+    bingoLines: { type: [[Number]], default: [] },
     syncCount: { type: Number, default: 0 },
+    lastSubmissionTime: { type: Date },
   },
   {
     timestamps: true,
   }
 );
 
-export default mongoose.models.TeamScore || mongoose.model<ITeamScore>('TeamScore', TeamScoreSchema);
+// --- ROUND 1 MODEL ---
+// Standard collection: 'teamscores'
+export const TeamScore = mongoose.models.TeamScore || mongoose.model<ITeamScore>('TeamScore', TeamScoreSchema);
+
+// --- ROUND 2 MODEL ---
+// Isolated collection: 'team_scores_r2'
+export const TeamScoreR2 = mongoose.models.TeamScoreR2 || mongoose.model<ITeamScore>('TeamScoreR2', TeamScoreSchema, 'team_scores_r2');
+
+export default TeamScore;

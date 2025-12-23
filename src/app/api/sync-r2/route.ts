@@ -1,10 +1,7 @@
-// ===========================================
-// SYNC SCORE API ROUTE - The Core Engine
-// ===========================================
-
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
-import { TeamScore, Question } from '@/models';
+import { QuestionR2 } from '@/models/Question';
+import { TeamScoreR2 } from '@/models/TeamScore';
 import { fetchTeamSubmissions } from '@/services/codeforcesService';
 import { calculateTeamScore } from '@/services/bingoCalculator';
 import { checkRateLimit } from '@/lib/rateLimit';
@@ -19,8 +16,7 @@ const DUMMY_CF_HANDLE = 'Geothermal';
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limiting: 5 requests per minute per team
-    const identifier = DUMMY_TEAM_ID;
+    const identifier = `${DUMMY_TEAM_ID}_r2`;
     const rateLimit = checkRateLimit(identifier, 5, 60000);
     
     if (rateLimit.limited) {
@@ -42,7 +38,6 @@ export async function POST(request: NextRequest) {
 
 // export async function POST(request: NextRequest) {
 //   try {
-
 //     const session = await getServerSession(authOptions);
 //     if (!session || !session.user?.teamId) {
 //       return NextResponse.json<SyncResponse>(
@@ -50,64 +45,39 @@ export async function POST(request: NextRequest) {
 //         { status: 401 }
 //       );
 //     }
-
-//     const identifier = session.user.teamId;
+//     const identifier = session.user.teamId + "_r2";
 //     const rateLimit = checkRateLimit(identifier, 5, 60000);
-    
-//     if (rateLimit.limited) {
-//       const resetIn = Math.ceil((rateLimit.resetTime - Date.now()) / 1000);
-//       return NextResponse.json<SyncResponse>(
-//         { success: false, error: `Rate limit exceeded. Try again in ${resetIn} seconds.` },
-//         { 
-//           status: 429,
-//           headers: {
-//             'X-RateLimit-Limit': '5',
-//             'X-RateLimit-Remaining': '0',
-//             'X-RateLimit-Reset': rateLimit.resetTime.toString(),
-//           }
-//         }
-//       );
-//     }
-
+//     if (rateLimit.limited) { ... }
 //     await connectDB();
-
 //     const team = await Team.findById(session.user.teamId);
-//     if (!team) {
-//       return NextResponse.json<SyncResponse>(
-//         { success: false, error: 'Team not found' },
-//         { status: 404 }
-//       );
-//     }
-
+//     if (!team) { ... }
 //     const teamId = team._id.toString();
 //     const cfHandle = team.codeforcesHandle;
 
-    const allQuestions = await Question.find({}).sort({ gridIndex: 1 });
+    const allQuestions = await QuestionR2.find({}).sort({ gridIndex: 1 });
     if (!allQuestions || allQuestions.length === 0) {
       return NextResponse.json<SyncResponse>(
-        { success: false, error: 'No questions found' },
+        { success: false, error: 'No Round 2 questions found' },
         { status: 404 }
       );
     }
 
-    let teamScore = await TeamScore.findOne({ teamId: DUMMY_TEAM_ID });
+    let teamScore = await TeamScoreR2.findOne({ teamId: DUMMY_TEAM_ID });
     if (!teamScore) {
       return NextResponse.json<SyncResponse>(
-        { success: false, error: 'Team not initialized. Please login.' },
+        { success: false, error: 'Team not initialized. Please load the game first.' },
         { status: 400 }
       );
     }
     
     const teamQuestions = teamScore.questionOrder.map((originalIndex: number, gridPosition: number) => {
       const question = allQuestions[originalIndex];
-      return {
-        ...question.toObject(),
-        gridIndex: gridPosition,
-      };
+      return { ...question.toObject(), gridIndex: gridPosition };
     });
 
     const submissionsResult = await fetchTeamSubmissions([DUMMY_CF_HANDLE]);
     // const submissionsResult = await fetchTeamSubmissions([cfHandle]);
+    
     if (!submissionsResult.success) {
       return NextResponse.json<SyncResponse>(
         { success: false, error: submissionsResult.error },
@@ -136,18 +106,13 @@ export async function POST(request: NextRequest) {
       );
 
       if (relevantSubmissions.length > 0) {
-        const latestTimestamp = Math.max(
-          ...relevantSubmissions.map((s: any) => s.creationTimeSeconds)
-        );
+        const latestTimestamp = Math.max(...relevantSubmissions.map((s: any) => s.creationTimeSeconds));
         lastSubmissionTime = new Date(latestTimestamp * 1000);
       }
     }
 
-    await TeamScore.findOneAndUpdate(
-      {
-        teamId: DUMMY_TEAM_ID,
-        // teamId: teamId
-      },
+    await TeamScoreR2.findOneAndUpdate(
+      { teamId: DUMMY_TEAM_ID },
       {
         solvedIndices: scoreResult.solvedIndices,
         currentScore: scoreResult.currentScore,
@@ -167,7 +132,7 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Sync error:', error);
+    console.error('Sync error Round 2:', error);
     return NextResponse.json<SyncResponse>(
       { success: false, error: 'Server error during sync' },
       { status: 500 }
