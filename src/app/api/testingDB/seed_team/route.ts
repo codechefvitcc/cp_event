@@ -7,8 +7,8 @@ export async function POST() {
     await connectDB();
 
     const team = {
-      teamName: "Anwesha",
-      email: "manmaychakarborty@gmail.com",
+      teamName: "Manmay",
+      email: "imanmay2@gmail.com",
       codeforcesHandle: null,
     };
 
