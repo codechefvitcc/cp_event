@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Cormorant_Garamond, Space_Mono } from "next/font/google";
 import { Geist, Geist_Mono } from "next/font/google"; 
 import "./globals.css";
+import Providers from "./providers";
+import { Navbar } from "@/components/navbar";
 import CustomCursor from "@/components/CustomCursor";
 import Providers from "./providers";
 import { Navbar } from "@/components/navbar";
