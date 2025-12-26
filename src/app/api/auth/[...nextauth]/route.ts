@@ -38,14 +38,7 @@ export const authOptions: NextAuthOptions = {
       }
     },
 
-    // Redirect after successful sign in
-    async redirect({ url, baseUrl }) {
-      // Always redirect to round1 after sign in
-      if (url.startsWith(baseUrl)) {
-        return `${baseUrl}/round1`;
-      }
-      return baseUrl + '/round1';
-    },
+   
 
     //  Runs on login & every request (JWT creation)
     async jwt({ token }) {

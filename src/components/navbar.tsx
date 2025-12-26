@@ -4,10 +4,20 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Terminal, Menu, X } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 export default function Navbar() {
+  const{data:session,status}=useSession()
+  const[isloggedin,setlogin]=useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  useEffect(()=>{
+    if(status=="authenticated"){
+      setlogin(true);
+    }
+  },[session])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,12 +65,18 @@ export default function Navbar() {
                   {`// ${link.name}`}
                 </Link>
               ))}
+
+              {isloggedin?
+              <button onClick={()=>{signOut({
+                callbackUrl:"/login"
+              })}}  className="font-ui px-4 py-2 text-black bg-primary hover:bg-white transition-all duration-300 font-bold text-sm border border-primary hover:shadow-[0_0_15px_rgba(34,197,94,0.5)]">SIGN OUT</button>
+              :
               <Link
                 href="/login"
                 className="font-ui px-4 py-2 text-black bg-primary hover:bg-white transition-all duration-300 font-bold text-sm border border-primary hover:shadow-[0_0_15px_rgba(34,197,94,0.5)]"
               >
                 LOGIN_
-              </Link>
+              </Link>}
             </div>
           </div>
 
