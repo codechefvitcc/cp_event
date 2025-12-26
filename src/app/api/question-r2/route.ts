@@ -1,11 +1,11 @@
-// ===========================================
-// QUESTION API ROUTE - Get questions and team score
-// ===========================================
+export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { connectDB } from '@/lib/db';
-import { Question, TeamScore, Team } from '@/models';
+import { QuestionR2 } from '@/models/Question';
+import { TeamScoreR2 } from '@/models/TeamScore';
+import { Team } from '@/models';
 import { authOptions } from '../auth/[...nextauth]/route';
 
 function shuffleArray(array: any[]) {
@@ -30,7 +30,6 @@ export async function GET(request: NextRequest) {
 
     await connectDB();
     const teamId = session.user.teamId;
-
     const team = await Team.findById(teamId);
     if (!team) {
       return NextResponse.json(
@@ -38,20 +37,19 @@ export async function GET(request: NextRequest) {
         { status: 404 }
       );
     }
-
-    const allQuestions = await Question.find({}).sort({ gridIndex: 1 });
+    const allQuestions = await QuestionR2.find({}).sort({ gridIndex: 1 });
     if (!allQuestions || allQuestions.length === 0) {
       return NextResponse.json(
-        { success: false, error: 'No questions found' },
+        { success: false, error: 'No Round 2 questions found' },
         { status: 404 }
       );
     }
 
-    let teamScore = await TeamScore.findOne({ teamId });
+    let teamScore = await TeamScoreR2.findOne({ teamId });
     
     if (!teamScore) {
       const randomOrder = shuffleArray([0, 1, 2, 3, 4, 5, 6, 7, 8]);
-      teamScore = await TeamScore.create({
+      teamScore = await TeamScoreR2.create({
         teamId,
         questionOrder: randomOrder,
         solvedIndices: [],
@@ -70,7 +68,7 @@ export async function GET(request: NextRequest) {
     });
 
     const gameData = {
-      name: 'Round 1',
+      name: 'Round 2',
       problems: teamQuestions,
     };
 
@@ -85,9 +83,9 @@ export async function GET(request: NextRequest) {
       teamName: team.teamName,
     });
   } catch (error) {
-    console.error('Question API error:', error);
+    console.error('Question API Round 2 error:', error);
     return NextResponse.json(
-      { success: false, error: 'Server error fetching questions' },
+      { success: false, error: 'Server error fetching Round 2 questions' },
       { status: 500 }
     );
   }
