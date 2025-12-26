@@ -1,4 +1,4 @@
-import Hero from '@/components/Hero';
+import HeroSection from '@/components/Hero';
 import Prizes from '@/components/Prizes';
 import Sponsors from '@/components/Sponsors';
 import Organizers from '@/components/Organizers';
@@ -6,7 +6,7 @@ import Organizers from '@/components/Organizers';
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#050505] text-white selection:bg-primary selection:text-black">
-      <Hero />
+      <HeroSection />
       <Prizes />
       <Sponsors />
       <Organizers />

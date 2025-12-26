@@ -3,8 +3,8 @@
 import { motion } from 'framer-motion';
 
 const organizers = [
-  { name: 'CodeChef VIT Chennai', role: 'Event Organizer', image: 'https://github.com/CodeChefVIT.png' },
-  { name: 'MIC Club', role: 'Event Organizer', image: 'https://github.com/MIC-VIT.png' },
+  { name: 'CodeChef VIT Chennai Chapter', role: 'Event Organizer', image: 'https://github.com/CodeChefVIT.png' },
+  { name: 'Microsoft Innovation Club', role: 'Event Organizer', image: 'https://github.com/MIC-VIT.png' },
 ];
 
 export default function Organizers() {
@@ -19,7 +19,7 @@ export default function Organizers() {
           <h2 className="font-ui text-primary text-sm tracking-widest mb-2">
             // THE_TEAM
           </h2>
-          <h3 className="font-display text-4xl md:text-5xl font-bold text-white">
+          <h3 className="font-ui text-4xl md:text-5xl font-bold text-white">
             ORGANIZERS
           </h3>
         </motion.div>
@@ -42,7 +42,7 @@ export default function Organizers() {
                  />
               </div>
               <h4 className="font-ui font-bold text-white text-xl mb-1">{org.name}</h4>
-              <p className="font-sans text-primary text-sm font-medium tracking-wide">{org.role}</p>
+              <p className="font-ui text-primary text-sm font-medium tracking-wide">{org.role}</p>
             </motion.div>
           ))}
         </div>
