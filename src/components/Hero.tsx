@@ -40,7 +40,7 @@ export default function Hero() {
             {text}<span className="animate-pulse">_</span>
           </div>
           
-          <h1 className="font-display text-6xl md:text-9xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-600 mb-6 leading-tight">
+          <h1 className="font-ui text-6xl md:text-9xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-600 mb-6 leading-tight">
             CODE<br className="md:hidden" />
             <span className="text-primary">BINGO</span>
           </h1>

@@ -40,7 +40,7 @@ export default function Prizes() {
           <h2 className="font-ui text-primary text-sm tracking-widest mb-2">
             // BOUNTY_ALLOCATION
           </h2>
-          <h3 className="font-display text-4xl md:text-5xl font-bold text-white">
+          <h3 className="font-ui text-4xl md:text-5xl font-bold text-white">
             PRIZE POOL
           </h3>
         </motion.div>
@@ -64,7 +64,7 @@ export default function Prizes() {
               <h4 className="font-ui text-xl font-bold text-white text-center mb-2">
                 {prize.title}
               </h4>
-              <p className="font-sans text-gray-400 text-center">
+              <p className="font-ui text-gray-400 text-center">
                 {prize.reward}
               </p>
             </motion.div>
