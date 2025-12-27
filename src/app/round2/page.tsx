@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { GridCell } from '@/components/GridCell';
 import { SyncButton } from '@/components/SyncButton';
 import type { IProblem } from '@/types';
+import { useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 
 interface GameData {
   id: string;
@@ -24,6 +26,16 @@ export default function Round2Page() {
   const [lastSyncTime, setLastSyncTime] = useState<Date | null>(null);
   const [error, setError] = useState('');
   const [teamName, setTeamName] = useState<string>('');
+
+const { data: session, status } = useSession();
+  const [open, setOpen] = useState(false);
+  const [isloggedin,setlogin]=useState(false);
+  useEffect(()=>{
+    if(status=="authenticated"){
+    setlogin(true);
+  }
+  },[status])
+
 
   useEffect(() => {
     const loadRound2Data = async () => {
@@ -100,7 +112,7 @@ export default function Round2Page() {
   return (
     <div className="min-h-screen bg-[#050505] text-[#F2F2F2]">
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-        
+
         {/* Header Section - Same UI, Different Logic */}
         <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-6 sm:mb-8 border-b border-white/10 pb-4 sm:pb-6">
           <div className="flex flex-col gap-2">
@@ -127,18 +139,27 @@ export default function Round2Page() {
 
           <div className="flex flex-col items-start lg:items-end gap-4">
             <div className="flex items-center gap-3">
-              <button 
+              <button
                 onClick={() => window.location.href = '/'}
                 className="px-4 py-2 border border-white/10 bg-white/5 hover:bg-white/10 text-white font-ui text-[10px] uppercase tracking-widest transition-all rounded-lg"
               >
                 Dashboard
               </button>
-              <button 
-                onClick={() => window.location.href = '/login'}
-                className="px-4 py-2 border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 text-red-400 font-ui text-[10px] uppercase tracking-widest transition-all rounded-lg"
-              >
-                Logout
-              </button>
+              {isloggedin ?
+                <button
+                  onClick={() => signOut({
+                    callbackUrl: "/login"
+                  })}
+                  className="px-4 py-2 border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 text-red-400 font-ui text-[10px] uppercase tracking-widest transition-all rounded-lg"
+                >
+                  Logout
+                </button>
+                : <button
+                  onClick={() => window.location.href = '/login'}
+                  className="px-4 py-2 border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 text-red-400 font-ui text-[10px] uppercase tracking-widest transition-all rounded-lg"
+                >
+                  Login
+                </button>}
             </div>
             <p className="font-ui text-[10px] sm:text-xs text-white/30 max-w-[280px] leading-relaxed uppercase tracking-wider text-left lg:text-right">
               Round 2: Advanced Challenges. Complete rows, columns, or diagonals for elite bonus points.
@@ -149,7 +170,7 @@ export default function Round2Page() {
         {/* Stats Dashboard - Connecting to ProgressR2 */}
         <section className="flex justify-center mb-12 sm:mb-16">
           <div className="flex w-full max-w-md sm:max-w-3xl bg-[#0b0b0b] rounded-3xl border border-white/10 overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.6)]">
-            
+
             <div className="flex-1 min-w-0 py-4 sm:py-6 flex flex-col group hover:bg-white/5 transition-all pl-6 sm:pl-10">
               <p className="font-ui text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-white/40 mb-1 text-left">Total Score</p>
               <div className="flex items-end justify-start gap-1.5">
@@ -204,7 +225,7 @@ export default function Round2Page() {
         {/* Sync Area */}
         <div className="flex flex-col items-center gap-8 sm:gap-12">
           <SyncButton onSync={handleSync} lastSyncTime={lastSyncTime} />
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 w-full pt-8 sm:pt-12 border-t border-white/10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 w-full pt-8 sm:pt-12 border-t border-white/10">
             <div className="space-y-4">
               <p className="font-ui text-[10px] uppercase tracking-[0.3em] font-bold text-white/80">Scoring Rules</p>
               <p className="text-white/40 text-[10px] sm:text-xs leading-relaxed font-ui uppercase">
