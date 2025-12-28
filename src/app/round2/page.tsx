@@ -287,10 +287,10 @@ export default function Round2Page() {
         </div>
       </footer>
 
-      {/* Logout Confirmation Modal - Purple Theme */}
+      {/* Logout Confirmation Modal */}
       {showLogoutModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#0b0b0b] border border-purple-500/30 rounded-2xl p-8 max-w-md w-full mx-4 shadow-[0_20px_60px_rgba(168,85,247,0.2)]">
+          <div className="bg-[#0b0b0b] border border-red-500/30 rounded-2xl p-8 max-w-md w-full mx-4 shadow-[0_20px_60px_rgba(239,68,68,0.2)]">
             <h2 className="text-2xl font-sans font-black tracking-tighter uppercase mb-4 text-white">
               Confirm Sign Out
             </h2>
@@ -306,7 +306,7 @@ export default function Round2Page() {
               </button>
               <button
                 onClick={handleConfirmLogout}
-                className="flex-1 px-6 py-3 border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 font-ui text-[10px] uppercase tracking-widest transition-all rounded-lg"
+                className="flex-1 px-6 py-3 border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 text-red-400 font-ui text-[10px] uppercase tracking-widest transition-all rounded-lg"
               >
                 Sign Out
               </button>
