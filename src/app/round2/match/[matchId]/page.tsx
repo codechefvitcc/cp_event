@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useSession, signOut } from 'next-auth/react';
+import { secureFetch } from '@/lib/csrf';
 
 
 
@@ -135,7 +136,7 @@ export default function Round2MatchPage() {
 
     const sync = async () => {
       try {
-        const res = await fetch('/api/Round-2/sync', {
+        const res = await secureFetch('/api/Round-2/sync', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

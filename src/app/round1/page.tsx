@@ -7,6 +7,7 @@ import { GridCell } from '@/components/GridCell';
 import { SyncButton } from '@/components/SyncButton';
 import type { IProblem } from '@/types';
 import CodeforcesDialog from '@/components/CodeforcesHandle';
+import { secureFetch } from '@/lib/csrf';
 
 
 interface GameData {
@@ -45,7 +46,7 @@ export default function Round1Page() {
   }, [status, session]);
 
   const handleCodeforcesSubmit = async (handle: string) => {
-    const res = await fetch("/api/team/update", {
+    const res = await secureFetch("/api/team/update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ codeforcesHandle: handle }),
@@ -84,7 +85,7 @@ export default function Round1Page() {
 
   const handleSync = useCallback(async (): Promise<void> => {
     try {
-      const res = await fetch('/api/sync-score', { method: 'POST' });
+      const res = await secureFetch('/api/sync-score', { method: 'POST' });
       const data = await res.json();
 
       if (data.success) {
