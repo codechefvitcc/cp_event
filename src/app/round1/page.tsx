@@ -39,10 +39,10 @@ export default function Round1Page() {
   const [loading, setLoading] = useState(true);
   const [lastSyncTime, setLastSyncTime] = useState<Date | null>(null);
   const [error, setError] = useState('');
-  const [teamName, setTeamName] = useState<string>('');
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showAccessDenied, setShowAccessDenied] = useState(false);
   const hasRound2Access = session?.user?.hasRound2Access || false;
+  const teamName = session?.user?.teamName || 'Team';
   const [open, setOpen] = useState(false);
   const [round1Status, setRound1Status] = useState<Round1Status | null>(null);
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
@@ -113,7 +113,6 @@ export default function Round1Page() {
 
         setGame(data.game);
         setProgress(data.progress);
-        setTeamName(data.teamName || 'Unknown Team');
       } catch (err) {
         setError('Failed to load game data');
       } finally {
@@ -209,7 +208,7 @@ export default function Round1Page() {
           <div className="inline-flex items-center gap-2 px-4 py-2 border border-purple-500/30 bg-purple-500/10 rounded-lg mb-8">
             <span className="w-2 h-2 bg-purple-500 rounded-full shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
             <p className="font-ui text-sm uppercase tracking-[0.3em] text-purple-300">
-              {teamName || 'Team'}
+              {teamName}
             </p>
           </div>
 
@@ -225,6 +224,14 @@ export default function Round1Page() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            {hasEnded && (
+              <button 
+                onClick={handleRound2Click}
+                className="w-full l:w-auto px-10 py-3 border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 font-ui text-[10px] uppercase tracking-widest transition-all rounded-lg"
+              >
+                Advance to Round 2
+              </button>
+            )}
             <button 
               onClick={() => window.location.href = '/leaderboard'}
               className="w-full sm:w-auto px-8 py-3 border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 font-ui text-[10px] uppercase tracking-widest transition-all rounded-lg"
@@ -325,12 +332,6 @@ export default function Round1Page() {
                 className="px-4 py-2 border border-white/10 bg-white/5 hover:bg-white/10 text-white font-ui text-[10px] uppercase tracking-widest transition-all rounded-lg"
               >
                 Leaderboard
-              </button>
-              <button 
-                onClick={handleRound2Click}
-                className="px-4 py-2 border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 font-ui text-[10px] uppercase tracking-widest transition-all rounded-lg"
-              >
-                Advance to Round 2 →
               </button>
 
               <button 
