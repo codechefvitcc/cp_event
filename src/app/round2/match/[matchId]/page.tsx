@@ -343,7 +343,7 @@ export default function Round2MatchPage() {
 
           <div className="divide-y divide-white/10 border border-white/10 bg-[#0b0b0b]">
             {my.questions.map(q => (
-              <div
+              <button // Changed from div to button
                 key={q.id}
                 onClick={() =>
                   window.open(
@@ -351,7 +351,8 @@ export default function Round2MatchPage() {
                     '_blank'
                   )
                 }
-                className="p-4 cursor-pointer hover:bg-white/5 flex justify-between items-center"
+                // Added 'w-full text-left' to maintain the layout behavior of a div
+                className="w-full text-left p-4 cursor-pointer hover:bg-white/5 flex justify-between items-center transition-colors focus:outline-none focus:bg-white/5"
               >
                 <div>
                   <p className="font-bold">
@@ -368,7 +369,7 @@ export default function Round2MatchPage() {
                 >
                   {q.solved ? 'Solved' : 'Unsolved'}
                 </span>
-              </div>
+              </button>
             ))}
           </div>
         </section>
