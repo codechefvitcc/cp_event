@@ -197,3 +197,24 @@
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #050505; }
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+
+/* src/app/globals.css */
+
+:root,
+body,
+html,
+#__next,
+[data-reactroot] {
+  cursor: none !important;
+}
+
+/* Force override on all interactive elements */
+a, button, input, textarea, select, option, label {
+  cursor: none !important;
+}
+
+/* The Catch-All (Keep this too) */
+* {
+  cursor: none !important;
+}
